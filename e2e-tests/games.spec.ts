@@ -24,6 +24,21 @@ test.describe('Game Listing and Navigation', () => {
     });
   });
 
+  /** Verifies that every listing card exposes a rating without removing its navigation link. */
+  test('should display each game rating out of five on the index page', async ({ page }) => {
+    await page.goto('/');
+
+    const gameCards = page.getByTestId('game-card');
+    await expect(gameCards.first()).toBeVisible();
+    const gameCardCount = await gameCards.count();
+
+    for (let index = 0; index < gameCardCount; index++) {
+      const card = gameCards.nth(index);
+      await expect(card.getByTestId('game-rating')).toHaveText(/^[0-5]\.\d \/ 5$|^No rating yet$/);
+      await expect(card).toHaveAttribute('href', /\/game\/\d+$/);
+    }
+  });
+
   test('should navigate to correct game details page when clicking on a game', async ({ page }) => {
     let gameId: string | null;
     let gameTitle: string | null;

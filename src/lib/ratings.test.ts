@@ -1,5 +1,19 @@
 import { describe, it, expect } from 'vitest';
-import { clampRating, formatStarRating } from './ratings';
+import { clampRating, formatGameCardRating, formatStarRating } from './ratings';
+
+/** Verifies game-card rating labels, including missing ratings and scale boundaries. */
+describe('formatGameCardRating', () => {
+    it.each([
+        { rating: null, expected: 'No rating yet' },
+        { rating: 0, expected: '0.0 / 5' },
+        { rating: 4.2, expected: '4.2 / 5' },
+        { rating: 5, expected: '5.0 / 5' },
+        { rating: -1, expected: '0.0 / 5' },
+        { rating: 6, expected: '5.0 / 5' },
+    ])('formats $rating as $expected', ({ rating, expected }) => {
+        expect(formatGameCardRating(rating)).toBe(expected);
+    });
+});
 
 describe('clampRating', () => {
     it('returns the value unchanged when within range', () => {
