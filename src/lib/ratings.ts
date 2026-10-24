@@ -14,6 +14,18 @@ export function clampRating(rating: number): number {
 }
 
 /**
+ * Formats a game card's rating with one decimal place on a five-point scale.
+ *
+ * @param rating - The game's star rating, or `null` when it has not been rated.
+ * @returns The clamped rating out of five, or `No rating yet` for a null rating.
+ */
+export function formatGameCardRating(rating: number | null): string {
+    if (rating === null) return 'No rating yet';
+
+    return `${clampRating(rating).toFixed(1)} / 5`;
+}
+
+/**
  * Builds a star glyph string for a rating between 0 and 5.
  *
  * Renders full (★), an optional half (½) and empty (☆) stars. Returns
